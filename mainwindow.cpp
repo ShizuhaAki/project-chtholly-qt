@@ -21,6 +21,7 @@
 #include <QMap>
 #include <QString>
 #include <QInputDialog>
+#include <QFileDialog>
 #include <QRandomGenerator>
 #include <QTextStream>
 #include <QDir>
@@ -84,9 +85,10 @@ void MainWindow::on_pushButton_clicked()
 
     int nid = rng.bounded(0, ok.size());
     int nxtStu = ok.values().takeAt(nid);
-    //if the checkbox is checked, display the name of the student
-    if (ui->checkBox->checkState() == Qt::CheckState::Checked) {
-        ui->result->setText(namelist[nxtStu]);
+    //if useStuName is set to true, then display name of student
+    if (useStuName) {
+        if (!namelist.contains(nxtStu)) ui->result->setNum(nxtStu);
+        else ui->result->setText(namelist[nxtStu]);
     }
     else ui->result->setNum(nxtStu);
     ok.erase(ok.find(nxtStu));
@@ -142,3 +144,34 @@ void MainWindow::on_pushButton_read_clicked()
     showStatus("成功读取存档文件，剩余：" + QString::number(ok.size()));
 }
 
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    if (ui->checkBox->checkState() == Qt::CheckState::Checked) {
+        if (!importedStuName) {
+            QMessageBox::warning(this, "警告", "您尚未导入名册，因此这个功能不可用。");
+            ui->checkBox->setCheckState(Qt::CheckState::Unchecked); //uncheck the checkbox because it is unavailable
+            return;
+        }
+        else useStuName = true;
+    }
+    else useStuName = false;
+}
+
+void MainWindow::on_pushButton_import_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open the file");
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "警告", "无法打开您选择的文件。可能是因为文件不存在，没有读取权限或者已经损毁。" );
+        return;
+    }
+    QTextStream in(&file);
+    int t; in >> t;
+    for (int i = 1; i <= t; i++) {
+        QString s;
+        in >> s;
+        namelist[i] = s;
+    }
+    importedStuName = true;
+}

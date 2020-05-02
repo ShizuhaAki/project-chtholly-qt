@@ -29,6 +29,10 @@ private slots:
     
     void on_pushButton_read_clicked();
     
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_pushButton_import_clicked();
+
 private:
     Ui::MainWindow *ui;
     void showStatus(QString);
