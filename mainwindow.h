@@ -15,6 +15,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
     void on_pushButton_new_clicked();
 
@@ -24,7 +25,12 @@ private slots:
 
     void on_pushButton_about_clicked();
 
+    void on_pushButton_save_clicked();
+    
+    void on_pushButton_read_clicked();
+    
 private:
     Ui::MainWindow *ui;
+    void showStatus(QString);
 };
 #endif // MAINWINDOW_H

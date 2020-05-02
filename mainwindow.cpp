@@ -22,6 +22,7 @@
 #include <QString>
 #include <QInputDialog>
 #include <QRandomGenerator>
+#include <QTextStream>
 #include <QDir>
 #include <QSet>
 #include <QFile>
@@ -40,6 +41,9 @@ QMap <int, QString> namelist;
 bool useStuName = false, importedStuName = false;
 QSet <int> ok;
 int tot;
+void MainWindow::showStatus(QString prompt) {
+    ui->statusbar->showMessage(prompt, 1000);
+}
 void MainWindow::on_pushButton_new_clicked()
 {
     //warns the user of potential overwrite of log file
@@ -86,15 +90,55 @@ void MainWindow::on_pushButton_clicked()
     }
     else ui->result->setNum(nxtStu);
     ok.erase(ok.find(nxtStu));
-   // ui->statusbar->showMessage("剩余" + QString::number(ok.size()), 1000);
+    ui->statusbar->showMessage("剩余" + QString::number(ok.size()), 1000);
 }
 
 void MainWindow::on_pushButton_about_clicked()
 {
 
     QMessageBox::about(this, tr("关于"),
-             tr(R"(Project-Chtholly Qt Version 0.9.3
+             tr(R"(Project-Chtholly Qt, Version 0.9.3
 这是使用 Qt 实现的跨平台课堂学号抽取系统。
 本程序为自由软件；您可依据自由软件基金会所发表的GNU通用公共许可证条款，对本程序再次发布和/或修改；无论您依据的是本许可证的第三版，或（您可选的）任一日后发行的版本。
 本程序是基于使用目的而加以发布，然而不负任何担保责任；亦无对适售性或特定目的适用性所为的默示性担保。详情请参照GNU通用公共许可证。)"));
 }
+
+void MainWindow::on_pushButton_save_clicked()
+{
+    QFile ouf("save.moe");
+    if (!ouf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("错误"), "存档文件无法在写入模式下打开");
+        return;
+    }
+    QTextStream out(&ouf);
+    out << tot << " " << tot - ok.size() << endl;
+    for (int i = 1; i <= tot; i++) {
+        if (!ok.contains(i)) out << i << endl;
+    }
+    showStatus("成功写入存档文件");
+}
+
+void MainWindow::on_pushButton_read_clicked()
+{
+    //reads and parses APP_PATH/save.moe
+    QFile inf("save.moe");
+    if (!inf.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("错误"), "存档文件无法在只读模式下打开");
+        return;
+    }
+    QTextStream in(&inf);
+    int t, num; in >> t >> num;
+    QSet <int> bad;
+    for (int i = 1; i <= num; i++) {
+        int x;
+        in >> x;
+        bad.insert(x);
+    }
+    ok.clear();
+    for (int i = 1; i <= t; i++) {
+        if (!bad.contains(i)) ok.insert(i);
+    }
+    tot = t;
+    showStatus("成功读取存档文件，剩余：" + QString::number(ok.size()));
+}
+
