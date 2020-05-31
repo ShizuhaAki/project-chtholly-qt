@@ -36,5 +36,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void showStatus(QString);
+    void import(bool);
 };
 #endif // MAINWINDOW_H
