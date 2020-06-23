@@ -9,7 +9,7 @@ Special format is required for namelist files, which should meet the following c
 
 1. It must be a plain text file.
 2. The first line should be a single integer *n*, denoting the total number of students.
-3. Then *n* lines follow, each line should contain a single name, **as for version 0.9.3, you cannot put spaces in the names, this will be supported in one of the future releases**.
+3. Then *n* lines follow, each line should contain a single name, **as for version 0.9.4, you cannot put spaces in the names, this will be supported in one of the future releases**.
 
 
 ## Download
