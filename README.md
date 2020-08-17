@@ -18,4 +18,27 @@ If you want the stable version, go to [Releases](https://github.com/Ravenclaw-OI
 
 The nightly build which are the latest working version can also be downloaded there, **Note that it can be pretty buggy and should NOT be used in production environment**. 
 
-You can also compile and build from source. *Compile Instructions WIP*.
+You can also compile and build from source.
+
+### Building from source
+Requires:
+- CMake >= 3.5
+- Qt 5.14
+- g++ (must support at least C++14 standard)
+
+On GNU/Linux systems, you can run
+
+```shell script
+cd /path/to/installation
+cmake .
+make
+```
+
+## Todo list
+
+- [] Encrypt save file (#3)
+- [] Optimize UI (#5)
+- [] Thorough runtime logging 
+
+## Contributing
+Contributions of all kind welcome! No conditions apply other than GitHub's standard requirements.
