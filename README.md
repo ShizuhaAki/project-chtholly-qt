@@ -36,9 +36,9 @@ make
 
 ## Todo list
 
-- [] Encrypt save file (#3)
-- [] Optimize UI (#5)
-- [] Thorough runtime logging 
+- [ ] Encrypt save file (#3)
+- [ ] Optimize UI (#5)
+- [ ] Thorough runtime logging 
 
 ## Contributing
 Contributions of all kind welcome! No conditions apply other than GitHub's standard requirements.
