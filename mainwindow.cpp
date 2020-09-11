@@ -49,7 +49,7 @@ void MainWindow::showStatus(QString prompt) {
 void MainWindow::on_pushButton_new_clicked()
 {
     //warns the user of potential overwrite of log file
-    int ret = QMessageBox::warning(this, "警告", "新建一个新的存档会覆盖原有的存档。\n 确认要继续吗？", QMessageBox::Yes | QMessageBox::No);
+    int ret = QMessageBox::warning(this, tr("警告"), tr("新建一个新的存档会覆盖原有的存档。\n 确认要继续吗？"), QMessageBox::Yes | QMessageBox::No);
     if (ret == QMessageBox::No) {
         return;
     }
@@ -59,7 +59,7 @@ void MainWindow::on_pushButton_new_clicked()
                                          1, 100000);
     //Initiallizes the total number of students
     if (num != 0) tot = num;
-    ui->statusbar->showMessage("学生人数已经设置为" + QString::number(tot), 1000);
+    ui->statusbar->showMessage(tr("学生人数已经设置为") + QString::number(tot), 1000);
     //Put all numbers into available pool
     for (int i = 1; i <= tot; i++) ok.insert(i);
 
@@ -75,7 +75,7 @@ void MainWindow::on_pushButton_clicked()
 {
     //randomizes a number from the available number pool
     if (ok.empty()) {
-        int ret = QMessageBox::warning(this, "警告", "所有号码已经全部抽取完成\n 您想要重新初始化吗？", QMessageBox::Yes | QMessageBox::No);
+        int ret = QMessageBox::warning(this, tr("警告"), tr("所有号码已经全部抽取完成\n 您想要重新初始化吗？"), QMessageBox::Yes | QMessageBox::No);
         if (ret == QMessageBox::No) {
             return;
         }
@@ -93,7 +93,7 @@ void MainWindow::on_pushButton_clicked()
     }
     else ui->result->setNum(nxtStu);
     ok.erase(ok.find(nxtStu));
-    ui->statusbar->showMessage("剩余" + QString::number(ok.size()), 1000);
+    ui->statusbar->showMessage(tr("剩余") + QString::number(ok.size()), 1000);
 }
 void importNames() {
 
@@ -111,7 +111,7 @@ void MainWindow::import(bool fromClick) {
     if (importFileName.size() == 0 || fromClick) importFileName = QFileDialog::getOpenFileName(this, "Open the file");
     QFile file(importFileName);
     if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, "警告", "无法打开您选择的文件。可能是因为文件不存在，没有读取权限或者已经损毁。 \n 您试图打开的是" + importFileName );
+        QMessageBox::warning(this, tr("警告"), tr("无法打开您选择的文件。可能是因为文件不存在，没有读取权限或者已经损毁。 \n 您试图打开的是") + importFileName );
         importFileName.clear();
         return;
     }
@@ -129,7 +129,7 @@ void MainWindow::on_pushButton_save_clicked()
 {
     QFile ouf("save.moe");
     if (!ouf.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("错误"), "存档文件无法在写入模式下打开");
+        QMessageBox::critical(this, tr("错误"), tr("存档文件无法在写入模式下打开"));
         return;
     }
     QTextStream out(&ouf);
@@ -142,7 +142,7 @@ void MainWindow::on_pushButton_save_clicked()
         //we will also read the imported student name file and save it
         out << importFileName << endl;
     }
-    showStatus("成功写入存档文件");
+    showStatus(tr("成功写入存档文件"));
 }
 
 void MainWindow::on_pushButton_read_clicked()
@@ -150,7 +150,7 @@ void MainWindow::on_pushButton_read_clicked()
     //reads and parses APP_PATH/save.moe
     QFile inf("save.moe");
     if (!inf.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("错误"), "存档文件无法在只读模式下打开");
+        QMessageBox::critical(this, tr("错误"), tr("存档文件无法在只读模式下打开"));
         return;
     }
     QTextStream in(&inf);
@@ -173,13 +173,13 @@ void MainWindow::on_pushButton_read_clicked()
       // in >> importFileName;
        // importFileName = in.readLine();
         if (importFileName.size() == 0) {
-            QMessageBox::critical(this, "错误","存档文件头部信息与实际内容不匹配。这可能是因为该文件经过了手动修改");
+            QMessageBox::critical(this, tr("错误"),tr("存档文件头部信息与实际内容不匹配。这可能是因为该文件经过了手动修改"));
                     return;
         }
         importedStuName = true;
         import(false);
     }
-    showStatus("成功读取存档文件，剩余：" + QString::number(ok.size()));
+    showStatus(tr("成功读取存档文件，剩余：") + QString::number(ok.size()));
 }
 
 
@@ -187,7 +187,7 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 {
     if (ui->checkBox->checkState() == Qt::CheckState::Checked) {
         if (!importedStuName) {
-            QMessageBox::warning(this, "警告", "您尚未导入名册，因此这个功能不可用。");
+            QMessageBox::warning(this, tr("警告"), tr("您尚未导入名册，因此这个功能不可用。"));
             ui->checkBox->setCheckState(Qt::CheckState::Unchecked); //uncheck the checkbox because it is unavailable
             return;
         }
