@@ -134,7 +134,7 @@ void MainWindow::on_pushButton_save_clicked()
     }
     QTextStream out(&ouf);
     out << tot << " " << tot - ok.size();
-    if (importedStuName) out << " 1" << endl; else out << endl;
+    if (importedStuName) out << " 1" << endl; else out << " 0" << endl;
     for (int i = 1; i <= tot; i++) {
         if (!ok.contains(i)) out << i << endl;
     }
