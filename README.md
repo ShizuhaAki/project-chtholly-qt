@@ -39,6 +39,7 @@ make
 - [ ] Encrypt save file (#3)
 - [ ] Optimize UI (#5)
 - [ ] Thorough runtime logging 
+- [ ] Better animations
 
 ## Contributing
 Contributions of all kind welcome! No conditions apply other than GitHub's standard requirements.
